@@ -1,24 +1,32 @@
 <template>
-  <div>
-    <form>
+  <div class="wrapper">
+    <div v-if="!isLoading" class="auth-form">
       <div>
-        <label>Login</label>
-        <input v-model="form.login" type="text" placeholder="Login" name="login">
+        <div>
+          <input v-model="form.login" type="text" placeholder="Login" name="login">
+        </div>
+        <div>
+          <input v-model="form.password" type="password" placeholder="Password" name="password">
+        </div>
+        <div>
+          <button @click.prevent="send">Enter</button>
+        </div>
       </div>
-      <div>
-        <label>Password</label>
-        <input v-model="form.password" type="password" placeholder="Password" name="password">
-      </div>
-      <div>
-        <button @click.prevent="send">Enter</button>
-      </div>
-    </form>
+    </div>
+    <Spinner v-else />
+
   </div>
+
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+import Spinner from "@/components/Spinner";
+
 export default {
   name: "Auth",
+  components: {Spinner},
+  comments: {Spinner},
   data() {
     return {
       form: {
@@ -28,43 +36,54 @@ export default {
     }
   },
   methods: {
+    ... mapActions(['logged']),
     send() {
-      console.log(this.form)
+      this.logged({ data: this.form })
     }
-  }
+  },
+  computed: {
+    ...mapState(['isLoggedIn', 'isLoading']),
+  },
 }
 </script>
 
 <style scoped>
-form {
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.auth-form {
+  width: 100%;
+  background: url(./../assets/images/mount.png) no-repeat center/cover
+}
+.auth-form > div {
+  width:50%;
   display: flex;
   flex-direction: column;
-  width: 50%;
   margin: 50px auto;
   padding: 30px;
   border: 1px solid lightgray;
   border-radius: 14px;
+  background-color: aliceblue;
 }
-form > div:not(:last-child) {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
+.auth-form > div > div {
   margin: 10px;
-  align-items: center;
-}
-form > div:last-child {
   display: flex;
-  width: 100%;
   justify-content: center;
-  margin: 10px;
-  align-items: center;
 }
+
+.auth-form > div > div:last-child {
+  margin-bottom: 0;
+}
+
+
 input {
   width: 75%;
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #D3D3D3;
-  margin-left: 10px;
+  font-size: 16px;
 }
 button {
   justify-self: center;

@@ -1,5 +1,8 @@
 <template>
-$END$
+  <div>
+    User Managment
+  </div>
+
 </template>
 
 <script>
@@ -9,5 +12,8 @@ name: "UserManagment"
 </script>
 
 <style scoped>
+div {
+  width: 100%;
+}
 
 </style>

@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <AppNavbar v-if="isLoggedIn"/>
+      <router-view
+          :content="'Content'"
+      />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppNavbar from './components/AppNavbar';
+import { mapState } from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    AppNavbar,
+  },
+  computed: {
+    ...mapState(['isLoggedIn'])
+  },
+  created() {
+    if(!this.isLoggedIn) {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  overflow: hidden;
+  min-height: calc(100vh - 16px);
+  width: 100%;
+  position: relative;
 }
+
 </style>

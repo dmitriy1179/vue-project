@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td>
-      {{ channelData.id }}
+      {{ index }}
     </td>
     <td>
       {{ channelData.name }}
@@ -10,7 +10,7 @@
       {{ channelData.url }}
     </td>
     <td>
-      <input type="checkbox" :name="channelData.id" :checked="channelData.status">
+      <input type="checkbox" :name="channelData.id" v-model="channelData.status" >
     </td>
     <td>
       <span>{{ channelData.user }}</span>
@@ -24,7 +24,7 @@
     <td>
       <button type="button" @click.prevent="viewChannel(channelData.id)">View</button>
       <button type="button" @click.prevent="editChannel(channelData.id)">Edit</button>
-      <button type="button">Delete</button>
+      <button type="button" @click.prevent="deleteChannel(channelData.id)">Delete</button>
     </td>
 
   </tr>
@@ -34,20 +34,27 @@
 <script>
 import { mapActions } from 'vuex';
 export default {
-  name: "tablesRow",
-  props: ['channelData'],
+  name: "ChannelDataRow",
+  props: ['channelData', 'index'],
+
   methods: {
-    ... mapActions(['viewChannelData', 'editChannelData']),
+    ... mapActions(['deleteChannelData']),
     viewChannel(id) {
-      this.viewChannelData(id)
+      this.$router.push(`/channel/${id}`)
     },
     editChannel(id) {
-      this.editChannelData(id)
+      this.$router.push(`/channel/edit/${id}`)
+    },
+    deleteChannel(id) {
+      this.deleteChannelData(id)
     }
   }
 }
 </script>
 
 <style scoped>
+td {
+  padding: 7px 10px;
+}
 
 </style>
